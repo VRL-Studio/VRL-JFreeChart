@@ -13,7 +13,11 @@ Integrates JFreechart to VRL
 
 ## How To Build
 
-- **TODO:** explain plugin paths
+- Adjust the plugin path in the build.xml file.
+  Example:
+
+    # vrl property folder location (plugin destination)
+    vrl.dir=/Users/yourname/.vrl/default
 
 - Open the *VRL* project with NetBeans and build it
 - Open the *VRL-JFreeChart* project with NetBeans and build it
