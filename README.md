@@ -21,7 +21,7 @@ Integrates JFreechart to VRL
 
 ##How To Run
 
-Run [VRL-Studio](http://vrl-studio.mihosoft.eu) >= and open a project that uses this plugin.
+Run [VRL-Studio](http://vrl-studio.mihosoft.eu) >= 0.4.4.2 and open a project that uses this plugin.
 
 **TODO:** add more documentation
 
