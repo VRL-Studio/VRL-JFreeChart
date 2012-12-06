@@ -6,8 +6,10 @@ Integrates JFreechart to VRL
 ## Dependencies
 
 - Java >= 1.6 
-- NetBeans >= 7.01
-- [VRL](https://github.com/miho/VRL)
+- [NetBeans](http://netbeans.org) >= 7.01 
+- [VRL-Studio](http://vrl-studio.mihosoft.eu) >= 0.4.4.3
+- [VRL](https://github.com/miho/VRL) >= 0.4.2.6
+ 
 
 ## How To Build
 
@@ -18,7 +20,7 @@ Integrates JFreechart to VRL
 
 ##How To Run
 
-Run [VRL-Studio](http://vrl-studio.mihosoft.eu) and open a project that uses this plugin.
+Run [VRL-Studio](http://vrl-studio.mihosoft.eu) >= and open a project that uses this plugin.
 
 **TODO:** add more documentation
 
