@@ -98,6 +98,8 @@ private static final long serialVersionUID=1;
         vapi.addComponent(TrajectoryPlotter.class);
         vapi.addComponent(HistogramPlotter.class);
         
+        vapi.addComponent(MyPlotter.class);
+        
     }
 
     @Override
