@@ -58,7 +58,7 @@ public class JFXPluginConfigurator extends VPluginConfigurator implements java.i
 private static final long serialVersionUID=1;
     public JFXPluginConfigurator() {
         // specifiy the plugin name, version
-        setIdentifier(new PluginIdentifier("VRL-JFreeChart", "0.2.4"));
+        setIdentifier(new PluginIdentifier("VRL-JFreeChart", "0.2.5"));
 
         // add dependencies
         // e.g.: addDependency(new PluginDependency("VRL-UG4", "0.1","0.2"));
@@ -68,9 +68,9 @@ private static final long serialVersionUID=1;
         exportPackage("org.jfree");
         exportPackage("edu.gcsc.vrl.jfreechart");
         
-        setCopyrightInfoAsPlainText("(c) 2012 Steinbeis Forschungszentrum "
+        setCopyrightInfoAsPlainText("(c) 2015 Steinbeis Forschungszentrum "
                 + "(STZ Ölbronn)",
-                "(c) 2012 Steinbeis Forschungszentrum "
+                "(c) 2015 Steinbeis Forschungszentrum "
                 + "(STZ Ölbronn)\n\n"
                 + "Same license as VRL: LGPL v3\n"
                 + "(access detailed license information via Plugins->VRL->Copyright Information)\n\n");
@@ -98,7 +98,7 @@ private static final long serialVersionUID=1;
         vapi.addComponent(TrajectoryPlotter.class);
         vapi.addComponent(HistogramPlotter.class);
         
-        vapi.addComponent(MyPlotter.class);
+        vapi.addComponent(JFreeChartExporter.class);
         
     }
 

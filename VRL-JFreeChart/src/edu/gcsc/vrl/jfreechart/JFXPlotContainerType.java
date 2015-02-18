@@ -87,8 +87,6 @@ public class JFXPlotContainerType extends TypeRepresentationBase implements java
         
         setValueName("Plot"); // name of the visualization
 
-        setHideConnector(true);
-
         // Set layout
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setPreferredSize(new Dimension(300, 200));

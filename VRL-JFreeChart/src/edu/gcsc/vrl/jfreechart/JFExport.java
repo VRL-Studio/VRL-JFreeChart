@@ -49,7 +49,6 @@
  * A Framework for Declarative GUI Programming on the Java Platform.
  * Computing and Visualization in Science, 2011, in press.
  */
-
 package edu.gcsc.vrl.jfreechart;
 
 import java.io.*;
@@ -85,24 +84,26 @@ import org.apache.batik.dom.svg.*;
 import org.apache.batik.svggen.*;
 import org.apache.batik.ext.awt.*;
 
-/** Class with functions to export a JFreeChart object to various output formats including jpg, png, pdf, svg, eps.
+/**
+ * Class with functions to export a JFreeChart object to various output formats
+ * including jpg, png, pdf, svg, eps.
  */
 public class JFExport {
 
-    /** 
-     * Export jfreechart to image format. File must have an extension like
-     * jpg, png, pdf, svg, eps. Otherwise export will fail.
+    /**
+     * Export jfreechart to image format. File must have an extension like jpg,
+     * png, pdf, svg, eps. Otherwise export will fail.
+     *
      * @param file Destination Filedescriptor
      * @param chart JFreechart
      * @throws Exception
      */
-    public void export(File file, JFreeChart chart) throws Exception {
+    public boolean export(File file, JFreeChart chart) throws Exception {
 
         /*Get extension from file - File must have one extension of
-        jpg,png,pdf,svg,eps. Otherwise the export will fail.
+         jpg,png,pdf,svg,eps. Otherwise the export will fail.
          */
         String ext = JFUtils.getExtension(file);
-
 
         //  TODO - Make x,y variable
         int x, y;
@@ -112,91 +113,85 @@ public class JFExport {
 
         int found = 0;
 
-        try {
+        // JPEG
+        if (ext.equalsIgnoreCase("jpg")) {
+            ChartUtilities.saveChartAsJPEG(file, chart, x, y);
+            found++;
+        }
+        // PNG
+        if (ext.equalsIgnoreCase("png")) {
+            ChartUtilities.saveChartAsPNG(file, chart, x, y);
+            found++;
+        }
 
-            // JPEG
-            if (ext.equalsIgnoreCase("jpg")) {
-                ChartUtilities.saveChartAsJPEG(file, chart, x, y);
-                found++;
-            }
-            // PNG
-            if (ext.equalsIgnoreCase("png")) {
-                ChartUtilities.saveChartAsPNG(file, chart, x, y);
-                found++;
-            }
-
-            // PDF
-            if (ext.equalsIgnoreCase("pdf")) {
+        // PDF
+        if (ext.equalsIgnoreCase("pdf")) {
 
                 //JRAbstractRenderer jfcRenderer = new JFreeChartRenderer(chart);
-
                 // Use here size of r2d2 (see below, Rectangel replaced by Rectangle2D !)
+            Rectangle pagesize = new Rectangle(x, y);
 
-                Rectangle pagesize = new Rectangle(x, y);
+            Document document = new Document(pagesize, 50, 50, 50, 50);
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+            document.open();
+            PdfContentByte cb = writer.getDirectContent();
+            PdfTemplate tp = cb.createTemplate(x, y);
 
-                Document document = new Document(pagesize, 50, 50, 50, 50);
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-                document.open();
-                PdfContentByte cb = writer.getDirectContent();
-                PdfTemplate tp = cb.createTemplate(x, y);
-
-                Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
+            Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
 
                 // Draw doesn't works with Rectangle argument - use rectangle2D instead !
-                //chart.draw(g2, (java.awt.geom.Rectangle2D) new Rectangle(x,y));
-                Rectangle2D r2d2 = new Rectangle2D.Double(0, 0, x, y);
-                chart.draw(g2, r2d2);
+            //chart.draw(g2, (java.awt.geom.Rectangle2D) new Rectangle(x,y));
+            Rectangle2D r2d2 = new Rectangle2D.Double(0, 0, x, y);
+            chart.draw(g2, r2d2);
 
-                g2.dispose();
-                cb.addTemplate(tp, 0, 0);
-                document.close();
+            g2.dispose();
+            cb.addTemplate(tp, 0, 0);
+            document.close();
 
-                found++;
+            found++;
 
-            }
+        }
 
-            // SVG
-            if (ext.equalsIgnoreCase("svg")) {
+        // SVG
+        if (ext.equalsIgnoreCase("svg")) {
 // When exporting to SVG don't forget this VERY important line:
 // svgGenerator.setSVGCanvasSize(new Dimension(width, height));
 // Otherwise renderers will not know the size of the image. It will be drawn to the correct rectangle, but the image will not have a correct default siz
-                // Get a DOMImplementation
-                DOMImplementation domImpl =
-                        SVGDOMImplementation.getDOMImplementation();
-                org.w3c.dom.Document document = domImpl.createDocument(null, "svg", null);
-                SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
-                //chart.draw(svgGenerator,new Rectangle(x,y));
-                chart.draw(svgGenerator, new Rectangle2D.Double(0, 0, x, y));
+            // Get a DOMImplementation
+            DOMImplementation domImpl
+                    = SVGDOMImplementation.getDOMImplementation();
+            org.w3c.dom.Document document = domImpl.createDocument(null, "svg", null);
+            SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+            //chart.draw(svgGenerator,new Rectangle(x,y));
+            chart.draw(svgGenerator, new Rectangle2D.Double(0, 0, x, y));
 
-                boolean useCSS = true; // we want to use CSS style attribute
+            boolean useCSS = true; // we want to use CSS style attribute
 
-                Writer out = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-                svgGenerator.stream(out, useCSS);
-                out.close();
-                found++;
-            }
-
-            if (ext.equalsIgnoreCase("eps")) {
-
-                //Graphics2D g = new EpsGraphics2D();
-                FileOutputStream out = new FileOutputStream(file);
-                //Writer out=new FileWriter(file);
-                Graphics2D g = new EpsGraphics(file.getName(), out, 0, 0, x, y, ColorMode.COLOR_RGB);
-
-                chart.draw(g, new Rectangle2D.Double(0, 0, x, y));
-                //Writer out=new FileWriter(file);
-                out.write(g.toString().getBytes());
-                out.close();
-                found++;
-            }
-
-            if (found == 0) {
-                JOptionPane.showMessageDialog(null, "Target file type not recognized !", "Error !", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Target file type not recognized !", "Error !", JOptionPane.ERROR_MESSAGE);
-            return;
+            Writer out = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            svgGenerator.stream(out, useCSS);
+            out.close();
+            found++;
         }
+
+        if (ext.equalsIgnoreCase("eps")) {
+
+            //Graphics2D g = new EpsGraphics2D();
+            FileOutputStream out = new FileOutputStream(file);
+            //Writer out=new FileWriter(file);
+            Graphics2D g = new EpsGraphics(file.getName(), out, 0, 0, x, y, ColorMode.COLOR_RGB);
+
+            chart.draw(g, new Rectangle2D.Double(0, 0, x, y));
+            //Writer out=new FileWriter(file);
+            out.write(g.toString().getBytes());
+            out.close();
+            found++;
+        }
+
+        if (found == 0) {
+            throw new IllegalArgumentException("File format '" + ext + "' not supported!");
+        }
+
+        return true;
 
     }
 
@@ -216,7 +211,6 @@ public class JFExport {
         chooser.addChoosableFileFilter(new FileNameExtensionFilter("SVG Files", "svg"));
 
         chooser.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
-
 
         int returnVal = chooser.showSaveDialog(null);
         String fd = chooser.getFileFilter().getDescription();
