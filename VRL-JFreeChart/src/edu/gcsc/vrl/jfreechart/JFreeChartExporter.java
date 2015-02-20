@@ -17,7 +17,7 @@ import org.jfree.chart.JFreeChart;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-@ComponentInfo(name = "JFreeChartToSVG", category = "JFreeChart")
+@ComponentInfo(name = "JFreeChart Exporter", category = "JFreeChart", description = "Exports JFreeChart plots to various image formats (svg, pdf, png, etc.)")
 public class JFreeChartExporter implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;

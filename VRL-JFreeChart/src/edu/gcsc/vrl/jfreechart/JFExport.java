@@ -89,6 +89,16 @@ import org.apache.batik.ext.awt.*;
  * including jpg, png, pdf, svg, eps.
  */
 public class JFExport {
+    
+    private final String[] supportedFormats = {"svg", "png", "jpg", "pdf", "eps"};
+    
+    /**
+     * Returns the format extensions that are supported by this exporter.
+     * @return the format extensions that are supported by this exporter
+     */
+    public String[] getSupportedFormats() {
+        return supportedFormats.clone();
+    }
 
     /**
      * Export jfreechart to image format. File must have an extension like jpg,
