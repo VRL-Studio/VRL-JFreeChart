@@ -58,7 +58,7 @@ public class JFXPluginConfigurator extends VPluginConfigurator implements java.i
 private static final long serialVersionUID=1;
     public JFXPluginConfigurator() {
         // specifiy the plugin name, version
-        setIdentifier(new PluginIdentifier("VRL-JFreeChart", "0.2.5"));
+        setIdentifier(new PluginIdentifier("VRL-JFreeChart", "0.2.5.1"));
 
         // add dependencies
         // e.g.: addDependency(new PluginDependency("VRL-UG4", "0.1","0.2"));
